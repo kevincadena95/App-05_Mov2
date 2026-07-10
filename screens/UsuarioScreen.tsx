@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 (Opcional los componetes funcioanles) */
 
 export default function UsuarioScreen() {
-    const [usuarios, setUsuarios] = useState([])
+    const [usuarios, setUsuarios] = useState<usuario[]>([])
 
     useEffect(() => {
         cargarDatos()
@@ -39,6 +39,8 @@ export default function UsuarioScreen() {
 
             <FlatList
                 data={usuarios}
+                //puse este key porque me daba un error al copilar
+                keyExtractor={(item) => item.email}
                 renderItem={({ item }: {item: usuario}) => (
                     <View>
                         <Text>Nombre Compelto: {item.name.first} {item.name.last}</Text>

@@ -1,38 +1,58 @@
-import {StyleSheet, Text, View, FlatList, TextInput, Button, Alert
-} from 'react-native'
-import React, { useEffect, useState } from 'react'
+import {StyleSheet, Text, View, FlatList, TextInput, Button, Alert, } from 'react-native'
+
+import React, { useState } from 'react'
 import TarjetaPokemon from '../components/TarjetaPokemon'
+
+/*
+LEER LA API Y TRAER UNA LISTA DE POKEMONS
+
+CREAR UNA POKEDEX DONDE SE INGRESE EL NOMBRE DEL POKEMON
+APLICAR PROPS Y COMPONENTES FUNCIONALES
+PARA VER LA INFORMACIÓN DEL POKEMON SELECCIONADO
+*/
 
 export default function PokemonScreen() {
 
     const [nombre, setNombre] = useState('')
-    const [pokemonBuscado, setPokemonBuscado] = useState('')
+    const [pokemon, setPokemon] = useState<any>(null)
 
-    function buscarPokemon() {
+    const listaPokemon = [
+        'pikachu',
+        'charmander',
+        'ditto',
+        'charizard',
+        'bulbasaur',
+        'squirtle'
+    ]
 
-        const pokemon = nombre.toLowerCase().trim()
+    async function buscarPokemon() {
 
-        if (['pikachu', 'charmander'].includes(pokemon)) {
-            setPokemonBuscado(pokemon)
-        } else {
-            setPokemonBuscado('')
-            Alert.alert(
-                'Pokémon no encontrado',
-                'Busca pikachu o charmander'
-            )
+        const nombreIngresado = nombre.toLowerCase().trim()
+
+        if (!listaPokemon.includes(nombreIngresado)) {
+
+            setPokemon(null)
+
+            Alert.alert('Pokémon no encontrado',)
+
+            return
         }
+
+        const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombreIngresado}`)
+        const json = await resp.json()
+        setPokemon(json)
     }
 
     return (
         <View style={styles.container}>
 
             <Text style={styles.titulo}>
-                Pokedex
+                Pokédex
             </Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Ingresa Pokémon"
+                placeholder="Ingresa un Pokémon"
                 value={nombre}
                 onChangeText={(texto) => setNombre(texto)}
             />
@@ -42,15 +62,9 @@ export default function PokemonScreen() {
                 onPress={buscarPokemon}
             />
 
-            <FlatList
-                data={['pikachu', 'charmander'].filter(
-                    (item) => item === pokemonBuscado
-                )}
-                keyExtractor={(item) => item}
-                renderItem={({ item }) => (
-                    <TarjetaPokemon nombre={item} />
-                )}
-            />
+            {pokemon !== null && (
+                <TarjetaPokemon datos={pokemon} />
+            )}
 
         </View>
     )
@@ -60,20 +74,19 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        padding: 20,
-        paddingTop: 70
+        padding: 10
     },
 
     titulo: {
         fontSize: 25,
         textAlign: 'center',
-        marginBottom: 20
+        margin: 15
     },
 
     input: {
         borderWidth: 1,
-        padding: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        padding: 10
     }
 
 })

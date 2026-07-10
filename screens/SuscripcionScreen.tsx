@@ -29,23 +29,20 @@ export default function SuscripcionScreen() {
 
   function calcular() {
     let suscripcion = 70;
-    let suscripcionF = 0;
 
     if (edad < 20) {
-      suscripcionF = suscripcion / 20;
-    } else {
-      suscripcionF = suscripcion;
+      suscripcion = suscripcion/ 2;
     }
 
     if (hijos > 0) {
-      suscripcionF = suscripcion - (hijos * 7);
-    } else {
-      suscripcionF = suscripcion;
+      suscripcion = suscripcion - (hijos * 7);
     }
 
+    if (suscripcion < 0) {
+      suscripcion = 0;
+    }
 
-
-    setSuscripcionF(suscripcionF);
+    setSuscripcionF(suscripcion);
   }
 
   return (

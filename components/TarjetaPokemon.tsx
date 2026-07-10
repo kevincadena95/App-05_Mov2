@@ -1,32 +1,41 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 export default function TarjetaPokemon(props: any) {
 
-
     return (
-        <View style={styles.tarjeta}>
+        <View style={styles.container}>
 
-            <Image
-                style={styles.imagen}
-                source={{
-                    uri: pokemon.sprites.front_default
-                }}
-            />
-
-            <Text style={styles.nombre}>
-                {pokemon.name}
+            <Text style={styles.letra}>
+                Nombre: {props.datos.name}
             </Text>
 
-            <Text>ID: {pokemon.id}</Text>
+            <View style={styles.fila}>
 
-            <Text>
-                Tipo: {pokemon.types[0].type.name}
-            </Text>
+                <View style={styles.datos}>
+                    <Text style={styles.letra}>
+                        Tipo: {props.datos.types[0].type.name}
+                    </Text>
 
-            <Text>Altura: {pokemon.height}</Text>
+                    <Text style={styles.letra}>
+                        Altura: {props.datos.height}
+                    </Text>
 
-            <Text>Peso: {pokemon.weight}</Text>
+                    <Text style={styles.letra}>
+                        Peso: {props.datos.weight}
+                    </Text>
+
+                   
+                </View>
+
+                <Image
+                    style={styles.img}
+                    source={{
+                        uri: props.datos.sprites.front_default
+                    }}
+                />
+
+            </View>
 
         </View>
     )
@@ -34,24 +43,31 @@ export default function TarjetaPokemon(props: any) {
 
 const styles = StyleSheet.create({
 
-    tarjeta: {
-        backgroundColor: 'white',
-        padding: 15,
-        marginTop: 10,
-        borderRadius: 10,
-        alignItems: 'center',
-        elevation: 3
+    container: {
+        backgroundColor: '#df4545',
+        margin: 7,
+        padding: 10
     },
 
-    imagen: {
-        width: 150,
-        height: 150
+    fila: {
+        flexDirection: 'row',
+        alignItems: 'center'
     },
 
-    nombre: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textTransform: 'capitalize',
-        marginBottom: 8
+    datos: {
+        width: '70%',
+
+    },
+
+    letra: {
+        fontSize: 20,
+        color: 'white'
+    },
+
+    img: {
+        width: 100,
+        height: 100,
+        resizeMode: 'contain'
     }
+
 })
